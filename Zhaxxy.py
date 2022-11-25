@@ -75,8 +75,10 @@ def ftpdownload(HOST, PORT, FILE, DIR='', DESTINATION_NAME=''): #download a file
         ftp.cwd(DIR)
     if DESTINATION_NAME == '':
         ftp.retrbinary("RETR " + FILE ,open(FILE, 'wb').write)
+        ftp.close()
     else:
         ftp.retrbinary("RETR " + FILE ,open(DESTINATION_NAME, 'wb').write)
+        ftp.close()
 
 def ftpupload(HOST, PORT, FILE, DIR='', REAL_NAME=''): #upload file to ftp server, must define a dir though or just looks in root
     ftp = FTP()
@@ -87,8 +89,10 @@ def ftpupload(HOST, PORT, FILE, DIR='', REAL_NAME=''): #upload file to ftp serve
         ftp.cwd(DIR)
     if REAL_NAME == '':
         ftp.storbinary('STOR ' + FILE, open(FILE, 'rb'))
+        ftp.close()
     else:
         ftp.storbinary('STOR ' + FILE, open(REAL_NAME, 'rb'))
+        ftp.close()
 ############################################################################################################################################
 
 #last but not least, a function specfically for lbp modding, was not made by me 
