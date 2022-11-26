@@ -94,6 +94,16 @@ def ftpupload(HOST, PORT, FILE, DIR='', REAL_NAME=''): #upload file to ftp serve
         ftp.storbinary('STOR ' + FILE, open(REAL_NAME, 'rb'))
         ftp.close()
 ############################################################################################################################################
+import os
+import shutil
+def ftp_download_folder_wget(HOST,PORT,DIR): #needs wget to be installed
+    if not DIR.startswith("/"): DIR = "/" + DIR
+    PORT = str(PORT)
+    os.system("wget -r ftp://"+ HOST +":"+ PORT + DIR +"*")
+    DIR = DIR.replace("/","\\")
+    shutil.move(HOST +"+"+PORT+DIR,DIR.split('\\')[-1])
+    shutil.rmtree(HOST +"+"+PORT)
+############################################################################################################################################
 
 #last but not least, a function specfically for lbp modding, was not made by me 
 
