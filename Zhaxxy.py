@@ -47,7 +47,9 @@ def silentdeleteprefix(nameprefix, my_dir): #is very similar to other one expect
             os.remove(os.path.join(my_dir, fname))
 ############################################################################################################################################
 
-def write_to_line(file, lineNUM, textwrite): # write to a line in a file, should be in same dir
+def write_to_line(file, lineNUM, textwrite,zeroequalsone=True): # write to a line in a file, should be in same dir
+    if zeroequalsone: lineNUM -= 1 #if you dont like starting with 0, it takes away, does this by deafult but you can change if you must
+    if lineNUM < 0: lineNUM = 0
     # with is like your try .. finally block in this case
     with open(file, 'r') as bob:
         # read a list of lines into data
