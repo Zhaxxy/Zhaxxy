@@ -106,6 +106,15 @@ def ftp_download_folder_wget(HOST,PORT,DIR): #needs wget to be installed
     shutil.move(HOST +"+"+PORT+DIR,DIR.split('\\')[-1])
     shutil.rmtree(HOST +"+"+PORT)
 ############################################################################################################################################
+import zipfile
+def get_uncompressed_zip_size(file,SI='mb'):
+    zp = zipfile.ZipFile("ps4.zip")
+    size = sum([zinfo.file_size for zinfo in zp.filelist])
+    SI = SI.upper()
+    if SI == 'KB': return float(size) / 1000
+    if SI == 'MB': return float(size) / 1000000
+    if SI == 'GB': return float(size) / 1000000000
+    return float(size)
 
 #last but not least, a function specfically for lbp modding, was not made by me 
 
