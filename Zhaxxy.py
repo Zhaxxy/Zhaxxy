@@ -108,7 +108,7 @@ def ftp_download_folder_wget(HOST,PORT,DIR): #needs wget to be installed
 ############################################################################################################################################
 import zipfile
 def get_uncompressed_zip_size(file,SI='mb'):
-    zp = zipfile.ZipFile("ps4.zip")
+    zp = zipfile.ZipFile(file)
     size = sum([zinfo.file_size for zinfo in zp.filelist])
     SI = SI.upper()
     if SI == 'KB': return float(size) / 1000
