@@ -116,6 +116,19 @@ def get_uncompressed_zip_size(file,SI='mb'):
     if SI == 'GB': return float(size) / 1000000000
     return float(size)
 
+import re
+def get_substring_regex(substring,same_subsubstringsTUPLE):
+    for index, subsub in enumerate(same_subsubstringsTUPLE): #making the group
+        if re.match(r'^[a-zA-Z0-9]*$',subsub) is None: subsub = '\\' + subsub #< saftey check
+        if index == 0: group = '(?:' + subsub + '|'
+        elif index == len(same_subsubstringsTUPLE)-1: group += subsub+')'
+        else: group += subsub + '|'
+    the_regex = ''
+    for character in substring:
+        if re.match(r'^[a-zA-Z0-9]*$',character) is None: character = '\\' + character #< saftey check
+        if character not in same_subsubstringsTUPLE: the_regex += character
+        else: the_regex += group
+    return the_regex
 #last but not least, a function specfically for lbp modding, was not made by me 
 
 def pack12_11_1(normal): #no clue what it does but it converts normals into the format lbp uses, does some magic and gives an integer do be converted into bytes
