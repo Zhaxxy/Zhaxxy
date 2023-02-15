@@ -68,33 +68,50 @@ def write_to_line(file, lineNUM, textwrite,zeroequalsone=True): # write to a lin
 ############################################################################################################################################
 from ftplib import FTP
 
-def ftpdownload(HOST, PORT, FILE, DIR='', DESTINATION_NAME=''): #download a file from ftp, you must define the dir though or just looks in root
+def ftp_loginANDconnect(HOST, PORT='21'): #simple function used to login in anymouslly to a ftp server
     ftp = FTP()
-    ftp.connect(HOST, int(PORT))
+    ftp.connect(HOST, PORT)
     ftp.login()
+    return ftp
 
+def ftpdownload(ftp, FILE, DIR='', DESTINATION_NAME=''): #download a file from ftp, you must define the dir though or just looks in root
     if not DIR == '':
         ftp.cwd(DIR)
     if DESTINATION_NAME == '':
         ftp.retrbinary("RETR " + FILE ,open(FILE, 'wb').write)
-        ftp.close()
     else:
         ftp.retrbinary("RETR " + FILE ,open(DESTINATION_NAME, 'wb').write)
-        ftp.close()
 
-def ftpupload(HOST, PORT, FILE, DIR='', REAL_NAME=''): #upload file to ftp server, must define a dir though or just looks in root
-    ftp = FTP()
-    ftp.connect(HOST, int(PORT))
-    ftp.login()
-
+def ftpupload(ftp, FILE, DIR='', REAL_NAME=''): #upload file to ftp server, must define a dir though or just looks in root
     if not DIR == '':
         ftp.cwd(DIR)
     if REAL_NAME == '':
         ftp.storbinary('STOR ' + FILE, open(FILE, 'rb'))
-        ftp.close()
     else:
         ftp.storbinary('STOR ' + FILE, open(REAL_NAME, 'rb'))
-        ftp.close()
+
+def list_all_files_in_folder_ftp(ftp,source_folder=''): #gets a list of all the folders and files in a folder (inlcuding subdirs), this one took me a while to make!
+    def get_list_LIST(path=source_folder):
+        lines = []
+        ftp.retrlines('LIST ' +path , lines.append)
+        lines.pop(0); lines.pop(0) #ill come up with a cleaner method later, get rid of useless non files
+        return lines
+
+    old_mememory = ftp.pwd()
+    filesnfolders = []
+    ftp.cwd(source_folder)
+
+    def recur_over_folder(list,path=source_folder):
+        for file in get_list_LIST(path):
+            clean_path = f'{path}/{file.split()[-1]}'
+            if clean_path in filesnfolders: continue
+            else: filesnfolders.append(clean_path)
+            if not file.startswith("-"): #again need a cleaner method, used to detirmine if its a file or folder, if it starts with - then its a file
+                ftp.cwd(f'/{path}/{file.split()[-1]}')
+                recur_over_folder(aaa,f'/{path}/{file.split()[-1]}')
+    recur_over_folder(filesnfolders)
+    ftp.cwd(old_mememory)
+    return filesnfolders
 ############################################################################################################################################
 import os
 import shutil
