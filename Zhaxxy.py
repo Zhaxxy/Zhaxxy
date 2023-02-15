@@ -108,7 +108,7 @@ def list_all_files_in_folder_ftp(ftp,source_folder=''): #gets a list of all the 
             else: filesnfolders.append(clean_path)
             if not file.startswith("-"): #again need a cleaner method, used to detirmine if its a file or folder, if it starts with - then its a file
                 ftp.cwd(f'/{path}/{file.split()[-1]}')
-                recur_over_folder(aaa,f'/{path}/{file.split()[-1]}')
+                recur_over_folder(filesnfolders,f'/{path}/{file.split()[-1]}')
     recur_over_folder(filesnfolders)
     ftp.cwd(old_mememory)
     return filesnfolders
