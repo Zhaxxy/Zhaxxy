@@ -77,18 +77,22 @@ def ftp_loginANDconnect(HOST, PORT='21'): #simple function used to login in anym
 def ftpdownload(ftp, FILE, DIR='', DESTINATION_NAME=''): #download a file from ftp, you must define the dir though or just looks in root
     if not DIR == '':
         ftp.cwd(DIR)
+    old_mememory = ftp.pwd()
     if DESTINATION_NAME == '':
         ftp.retrbinary("RETR " + FILE ,open(FILE, 'wb').write)
     else:
         ftp.retrbinary("RETR " + FILE ,open(DESTINATION_NAME, 'wb').write)
+    ftp.cwd(old_mememory)
 
 def ftpupload(ftp, FILE, DIR='', REAL_NAME=''): #upload file to ftp server, must define a dir though or just looks in root
     if not DIR == '':
         ftp.cwd(DIR)
+    old_mememory = ftp.pwd()
     if REAL_NAME == '':
         ftp.storbinary('STOR ' + FILE, open(FILE, 'rb'))
     else:
         ftp.storbinary('STOR ' + FILE, open(REAL_NAME, 'rb'))
+    ftp.cwd(old_mememory)
 
 def list_all_files_in_folder_ftp(ftp,source_folder=''): #gets a list of all the folders and files in a folder (inlcuding subdirs), this one took me a while to make!
     def get_list_LIST(path=source_folder):
