@@ -75,9 +75,10 @@ def ftp_loginANDconnect(HOST, PORT='21'): #simple function used to login in anym
     return ftp
 
 def ftpdownload(ftp, FILE, DIR='', DESTINATION_NAME=''): #download a file from ftp, you must define the dir though or just looks in root
+    old_mememory = ftp.pwd()
     if not DIR == '':
         ftp.cwd(DIR)
-    old_mememory = ftp.pwd()
+    
     if DESTINATION_NAME == '':
         ftp.retrbinary("RETR " + FILE ,open(FILE, 'wb').write)
     else:
@@ -85,9 +86,10 @@ def ftpdownload(ftp, FILE, DIR='', DESTINATION_NAME=''): #download a file from f
     ftp.cwd(old_mememory)
 
 def ftpupload(ftp, FILE, DIR='', REAL_NAME=''): #upload file to ftp server, must define a dir though or just looks in root
+    old_mememory = ftp.pwd()
     if not DIR == '':
         ftp.cwd(DIR)
-    old_mememory = ftp.pwd()
+    
     if REAL_NAME == '':
         ftp.storbinary('STOR ' + FILE, open(FILE, 'rb'))
     else:
