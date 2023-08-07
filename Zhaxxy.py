@@ -152,6 +152,12 @@ def get_substring_regex(substring,same_subsubstringsTUPLE):
         if character not in same_subsubstringsTUPLE: the_regex += character
         else: the_regex += group
     return the_regex
+
+# simple function to check if a string is a valid ps4 title id
+def is_ps4_title_id(input_str: str,/) -> bool: 
+    return input_str.startswith('CUSA') and len(input_str) == 9 and input_str[-5:].isdigit()
+
+
 #last but not least, a function specfically for lbp modding, was not made by me 
 
 def pack12_11_1(normal): #no clue what it does but it converts normals into the format lbp uses, does some magic and gives an integer do be converted into bytes
