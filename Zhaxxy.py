@@ -68,7 +68,7 @@ def write_to_line(file, lineNUM, textwrite,zeroequalsone=True): # write to a lin
 ############################################################################################################################################
 from ftplib import FTP
 
-def ftp_login_and_connect(HOST, PORT='21'): #simple function used to login in anymouslly to a ftp server
+def ftp_login_and_connect(HOST, PORT=21): #simple function used to login in anymouslly to a ftp server
     ftp = FTP()
     ftp.connect(HOST, PORT)
     ftp.login()
