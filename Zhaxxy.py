@@ -128,6 +128,20 @@ def ftp_delete_file(ftp: FTP, ftp_path: str):
             raise
 
 
+def delete_folder_contents(ftp: FTP, folder_with_stuff: str):
+    old_memory = ftp.pwd()
+    ftp.cwd(folder_with_stuff)
+    
+    for file in list_all_files_in_folder_ftp(ftp,folder_with_stuff):
+        if file[1]:
+            ftp_delete_file(ftp,file[0])
+    
+    for folder in list_all_files_in_folder_ftp(ftp,folder_with_stuff):
+        assert not folder[1], 'we should of already deleted all files!'
+        ftp.rmd(folder[0])
+        
+    ftp.cwd(old_memory)
+
 ############################################################################################################################################
 import os
 import shutil
