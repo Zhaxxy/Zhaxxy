@@ -118,6 +118,16 @@ def list_all_files_in_folder_ftp(ftp,source_folder=''): #gets a list of all the 
     recur_over_folder(filesnfolders)
     ftp.cwd(old_mememory)
     return filesnfolders
+
+from ftplib import error_reply
+def ftp_delete_file(ftp: FTP, ftp_path: str):
+    try:
+        ftp.delete(ftp_path)
+    except error_reply as e:
+        if not e.args[0].startswith('226'): # this is soo idiotic, why does it even raise that error?
+            raise
+
+
 ############################################################################################################################################
 import os
 import shutil
